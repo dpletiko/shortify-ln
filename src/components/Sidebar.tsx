@@ -13,7 +13,7 @@ const Sidebar = () => {
 
   if(session.isSuccess)
     return (
-      <aside className="w-96 flex flex-col align-bottom items-center justify-end" aria-label="Sidebar">
+      <aside className="w-80 flex flex-col align-bottom items-center justify-end" aria-label="Sidebar">
         <div className="overflow-y-auto py-4 px-3 mb-3 rounded">
           <ul className="space-y-2">
             <li>
