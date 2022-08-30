@@ -1,8 +1,9 @@
 import Head from "next/head";
+import { PropsWithChildren } from "react";
 import Sidebar from "./Sidebar";
 import Toastr, { ToastrProvider } from "./Toastr";
 
-const Layout = ({children}: any) => {
+const Layout: React.FC<PropsWithChildren> = ({children}) => {
   return (
     <>
       <ToastrProvider>
