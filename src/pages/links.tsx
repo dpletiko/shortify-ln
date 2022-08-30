@@ -38,10 +38,10 @@ const Links: NextPage = () => {
 const LinkRow = ({link}: LinkRowProps) => {
   return (
     <tr className="border-">
-      <td className="p-2 border-b border-r border-gray-300">{link.id}</td>
-      <td className="p-2 border-b border-r border-gray-300">{link.url}</td>
-      <td className="p-2 border-b border-r border-gray-300">{link.ln || '-'}</td>
-      <td className="p-2 border-b border-gray-300">{link.createdAt.toLocaleDateString()} {link.createdAt.toLocaleTimeString()}</td>
+      <td className="p-2 border-b border-r border-gray-300 dark:text-gray-400">{link.id}</td>
+      <td className="p-2 border-b border-r border-gray-300 dark:text-gray-400">{link.url}</td>
+      <td className="p-2 border-b border-r border-gray-300 dark:text-gray-400">{link.ln || '-'}</td>
+      <td className="p-2 border-b border-gray-300 dark:text-gray-400">{link.createdAt.toLocaleDateString()} {link.createdAt.toLocaleTimeString()}</td>
     </tr>
   );
 }
