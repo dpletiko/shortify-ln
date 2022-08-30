@@ -59,14 +59,14 @@ const Input = () => {
 
   return (
     <div className="w-full z-50">
-      <div className="mb-5 rounded-lg flex flex-row shadow-md focus-within:shadow-xl hover:shadow-xl">
+      <div className="mb-5 rounded-lg flex flex-row transition-all duration-300 shadow-md focus-within:shadow-lg hover:shadow-lg dark:shadow-[#FFFFFF2B] dark:hover:shadow-[#FFFFFF2B] dark:focus-within:shadow-[#FFFFFF2B]">
         <input 
           type="text" 
           name="link" 
           value={url}
           autoComplete="off"
           onChange={e => handleChange(e)}
-          className="p-6 rounded-lg w-full text-xl font-medium focus:outline-none"
+          className="p-6 rounded-lg w-full text-xl font-medium focus:outline-none dark:bg-transparent text-gray-400"
           placeholder="Type URL to shorten..." />
 
 
@@ -87,11 +87,13 @@ const Input = () => {
             id="protected-checkbox"
             onChange={handleLinkProtected}
             aria-describedby="protected-checkbox-text" 
-            className="w-4 h-4 text-blue-600 bg-gray-100 rounded-lg border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+            className="w-4 h-4 text-[#9333EA] accent-[#9333EA] rounded-lg" />
         </div>
         <div className="ml-2 text-sm">
-          <label htmlFor="protected-checkbox" className="font-medium text-gray-700">Is URL protecred?</label>
-          <p id="protected-checkbox-text" className="text-xs font-normal text-gray-500">Define specific ACL for the shortened link.</p>
+          <label htmlFor="protected-checkbox" className="font-medium text-gray-700 dark:text-gray-400">
+            Is URL password protected?
+            <p id="protected-checkbox-text" className="text-xs font-normal text-gray-500">Define specific ACL for the shortened link.</p>
+          </label>
         </div>
       </div>
 
@@ -117,13 +119,13 @@ const Acl = ({
 
   return (
     <div className="flex flex-row align-center items-center gap-5">
-      <div className="mb-5 rounded-lg flex flex-1 flex-row shadow-md focus-within:shadow-xl hover:shadow-xl transition-all duration-150">
+      <div className="mb-5 rounded-lg flex flex-1 flex-row transition-all duration-300 shadow-md focus-within:shadow-lg hover:shadow-lg dark:shadow-[#FFFFFF2B] dark:hover:shadow-[#FFFFFF2B] dark:focus-within:shadow-[#FFFFFF2B]">
         <input 
           type="text" 
           value={passwd}
           autoComplete="off"
           onChange={e => setPasswd(e.target.value)}
-          className="p-4 rounded-lg w-full text-base font-medium focus:outline-none"
+          className="p-4 rounded-lg w-full text-base font-medium focus:outline-none dark:bg-transparent text-gray-400"
           placeholder="Add URL password" />
 
 
@@ -145,11 +147,13 @@ const Acl = ({
               value={multi ? 'on' : 'off'}
               onChange={e => setMulti(e.target.checked)}
               aria-describedby="multi-checkbox-text" 
-              className="w-4 h-4 text-blue-600 bg-gray-100 rounded-lg border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+              className="w-4 h-4 text-[#9333EA] accent-[#9333EA] rounded-lg" />
           </div>
           <div className="ml-2 text-sm">
-            <label htmlFor="multi-checkbox" className="font-medium text-gray-700">Is ACL for multiple use?</label>
-            <p id="multi-checkbox-text" className="text-xs font-normal text-gray-500">Enable if password can be used more than once.</p>
+            <label htmlFor="multi-checkbox" className="font-medium text-gray-700 dark:text-gray-400">
+              Is ACL for multiple use?
+              <p id="multi-checkbox-text" className="text-xs font-normal text-gray-500">Enable if password can be used more than once.</p>
+            </label>
           </div>
         </div>
     </div>

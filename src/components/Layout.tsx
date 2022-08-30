@@ -13,17 +13,17 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className="w-100 flex flex-col items-center min-h-screen isolate">
-          <Toastr />
+        <main className="w-screen flex flex-1 flex-col items-center min-h-screen isolate bg-white dark:bg-stone-900">
+          {/* <Toastr /> */}
 
-          <h1 className="mt-5 text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700 mx-auto">
+          <h1 className="mt-5 mb-9 text-center text-[2rem] md:text-[5rem] font-extrabold text-gray-700 mx-auto">
             Shortify - <span className="text-purple-300">ln</span>
           </h1>
 
-          <div className="w-screen flex flex-1 flex-row">
-            <Sidebar />
+          <div className="w-screen pb-5 md:pb-8 flex-1 grid grid-cols-1 md:grid-cols-[14rem_1fr] lg:grid-cols-[14rem_1fr] xl:grid-cols-[20rem_minmax(900px,_1fr)_20rem]">
+            <Sidebar className="order-last md:order-first" />
 
-            <div className="px-9 flex flex-1 md:mr-80 justify-center">
+            <div className="px-6 md:px-9 flex flex-1 justify-center order-first md:order-last">
               {children}
             </div>
           </div>
