@@ -4,6 +4,20 @@
 
 
 @layer components {
+  .btn-shadow-interactive {
+    @apply
+      border
+      border-transparent
+      hover:shadow-md
+      focus:shadow-md
+      focus:outline-none
+      hover:border-[#FFFFFF2B]
+      hover:shadow-[#FFFFFF2B]
+      focus:border-[#FFFFFF2B]
+      focus:shadow-[#FFFFFF2B]
+      hover:bg-transparent;
+  }
+  
   .shadowed-container {
     @apply 
       border

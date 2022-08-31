@@ -13,7 +13,7 @@ const Sidebar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 
   if(session.isSuccess)
     return (
-      <aside className="fixed bottom-5 md:bottom-8 h-full w-56 xl:w-80 flex flex-col items-start justify-end pl-5 md:pl-8" aria-label="Sidebar">
+      <aside className="md:fixed bottom-5 md:bottom-8 h-full flex flex-col items-start justify-end pl-5 md:pl-8" aria-label="Sidebar">
         <div className="w-full flex overflow-y-auto py-4 mb-3 rounded">
           <ul className="space-y-2 w-full">
             <li>
@@ -70,11 +70,14 @@ const UserAvatar = ({user}: UserDataProps) => {
     return (
       <div className="flex flex-col justify-start">
         <div className="rounded-full ml-3 md:ml-4 mr-auto mb-4 bg-gradient-to-r p-[4px] from-[#6EE7B7] via-[#3B82F6] to-[#9333EA]">
-          <div className="flex flex-col h-full bg-white text-white rounded-full p-[6px]">
+          <div className="flex flex-col h-full bg-white text-white rounded-full p-[1px]">
             <Image 
+              alt=""
               width="64"
               height="64"
-              className="rounded-full" src={user.image} alt="" />
+              src={user.image} 
+              className="rounded-full" 
+            />
           </div>
         </div>
         <p className="font-semibold text-xl text-gray-900 dark:text-white text-center">{user.name}</p>

@@ -73,7 +73,7 @@ const Input = () => {
 
 
   return (
-    <form onSubmit={handleSubmit} className="w-full z-50">
+    <form onSubmit={handleSubmit} className="w-full">
       <div className="mb-5 flex flex-row transition-all duration-300 rounded-lg shadowed-container">
         <input 
           type="text" 

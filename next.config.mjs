@@ -16,6 +16,9 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['avatars.githubusercontent.com'],
+    domains: [
+      'avatars.githubusercontent.com',
+      'mdbcdn.b-cdn.net'
+    ],
   }
 });
