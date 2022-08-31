@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+  .shadowed-container {
+    @apply 
+      border
+      shadow-md
+      hover:shadow-lg
+      border-white/5
+      focus-within:shadow-lg
+      dark:shadow-[#FFFFFF2B]
+      dark:hover:shadow-[#FFFFFF2B]
+      dark:focus-within:shadow-[#FFFFFF2B];
+  }
+}

@@ -11,14 +11,25 @@ export const protectedLinkRouter = createProtectedRouter()
   .mutation("create", {
     input: z
       .object({
+        // ln: z.string().nullable(),
         url: z.string(),
+        protected: z.boolean(),
+        acl: z.array(z.object({
+          passwd: z.string(),
+          multi: z.boolean(),
+          // enabled: z.boolean(),
+        }))
       }),
     async resolve({ ctx, input }) {
       return await ctx.prisma.link.create({
         data: {
-          url: input.url,
           ln: undefined,
+          url: input.url,
+          protected: input.protected,
           userId: ctx.session.user.id,
+          acl: {
+            create: input.acl
+          }
         }
       })
     },
