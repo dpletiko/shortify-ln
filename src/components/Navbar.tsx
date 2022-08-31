@@ -21,10 +21,12 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
       <nav className="relative bg-transparent shadow-xl">
         <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
           <div className="container flex flex-wrap justify-between items-center">
-            <Link href="/" className="flex items-center">
-              <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                Shortify - <span className="text-purple-300">ln</span>
-              </span>
+            <Link href="/">
+              <a className="flex items-center">
+                <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+                  Shortify - <span className="text-purple-300">ln</span>
+                </span>
+              </a>
             </Link>
             <div className="p-5 md:p-9"></div>
           </div>
@@ -37,11 +39,13 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
     <nav className="relative bg-transparent shadow-xl">
       <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
         <div className="container mx-auto flex flex-wrap justify-between items-center">
-          <a href="https://flowbite.com/" className="flex items-center">
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              Shortify - <span className="text-purple-300">ln</span>
-            </span>
-          </a>
+          <Link href="/">
+            <a className="flex items-center">
+              <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+                Shortify - <span className="text-purple-300">ln</span>
+              </span>
+            </a>
+          </Link>
 
           <div className="w-full hidden md:block md:w-auto overflow-hidden transition-all duration-500 ease-in-out">
             <NavbarList />
