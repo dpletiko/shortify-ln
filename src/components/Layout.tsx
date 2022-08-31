@@ -13,13 +13,8 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
       </Head>
 
       <main className="flex flex-1 flex-col items-center min-h-screen isolate bg-white dark:bg-[#181818]">
-        <Toastr />
-
         <header className="w-full sticky top-0">
           <Navbar />
-          {/* <h1 className="mt-5 mb-9 text-center text-[2rem] md:text-[5rem] font-extrabold text-gray-700 mx-auto">
-            Shortify - <span className="text-purple-300">ln</span>
-          </h1> */}
         </header>
 
         <div className="pt-[2rem] md:pt-[3rem] w-full pb-5 md:pb-8 flex-1">
@@ -27,6 +22,8 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
             {children}
           </div>
         </div>
+
+        <Toastr />
       </main>
     </>
   );

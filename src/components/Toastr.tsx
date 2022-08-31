@@ -59,7 +59,7 @@ const ToastrProvider: React.FC<PropsWithChildren> = ({ children }) => {
 const Toastr = () => {
   const { toasts } = useContext(ToastrContext) as ToastrContextType;
   return (
-    <div className="absolute top-0 left-0 right-0 min-h-screen min-w-screen font-semibold text-lg text-red-600">
+    <>
       {toasts && toasts.map((t, i) => (
         <Toast 
           index={i}
@@ -67,7 +67,7 @@ const Toastr = () => {
           toast={t} 
           onClose={t.clear} />
       ))}
-    </div>
+    </>
   );
 };
 
