@@ -82,9 +82,9 @@ const Toast = ({ toast: { id, content, type, clear }, index }: ToastProps) => {
     <div 
       id={`toast-${id}`} 
       style={{
-        bottom: `calc(.75rem + (${(index) * 76}px))`
+        bottom: `calc(1rem + (${(index) * 76}px))`
       }}
-      className="right-3 absolute flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-all duration-500" 
+      className="right-5 absolute flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-all duration-500" 
     >
       <div className={`inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg text-blue-200 ${color}`}>
         <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

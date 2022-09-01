@@ -1,7 +1,7 @@
-import { Link } from "@prisma/client";
-import type { NextPage } from "next";
-import loadConfig from "next/dist/server/config";
 import { trpc } from "../utils/trpc";
+import { Link } from "@prisma/client";
+import { getSession } from "next-auth/react";
+import type { GetServerSideProps, NextPage } from "next";
 
 type LinkRowProps = {
   link: Link;
@@ -69,3 +69,20 @@ const LinkRow = ({link}: LinkRowProps) => {
 }
 
 export default Links;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}

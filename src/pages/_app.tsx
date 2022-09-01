@@ -13,7 +13,7 @@ const MyApp: AppType = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} >
       <ToastrProvider>
         <Layout>
           <Component {...pageProps} />

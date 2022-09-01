@@ -17,7 +17,7 @@ const Sidebar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
         <div className="w-full flex overflow-y-auto py-4 mb-3 rounded">
           <ul className="space-y-2 w-full">
             <li>
-              <Link href="/">
+              <Link passHref  href="/">
                 <a 
                   className="flex py-2 text-base font-normal hover:font-medium text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
                 >
@@ -30,7 +30,7 @@ const Sidebar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
               </Link>
             </li>
             <li>
-              <Link href="links">
+              <Link passHref  href="links">
                 <a 
                   className="flex py-2 text-base font-normal hover:font-medium text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
                 >

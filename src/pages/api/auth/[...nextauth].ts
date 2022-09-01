@@ -19,6 +19,14 @@ export const authOptions: NextAuthOptions = {
       // console.log(session, user)
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      console.log(url, baseUrl)
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return Promise.resolve(`${baseUrl}${url}`)
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return Promise.resolve(url)
+      return Promise.resolve(baseUrl)
+    }
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
@@ -41,6 +49,11 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  pages: {
+    signIn: "/login",
+    newUser: "/login",
+    signOut: "/logout",
+  },
 };
 
 export default NextAuth(authOptions);
