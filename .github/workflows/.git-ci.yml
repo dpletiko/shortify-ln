@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  VERSION: "${{ env.GITHUB_REF_NAME }}-${{ env.GITHUB_SHA }}"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build the Docker image
+      run: docker 
+        build . 
+          --file Dockerfile 
+          --build-arg BUILD=release
+          --build-arg VERSION="${{ env.VERSION }}"
+          --build-arg COMMIT="${{ env. GITHUB_SHA }}"
+          --tag "${{ github.repository }}:${{ env.GITHUB_REF_NAME }}:$(date +%s)"
