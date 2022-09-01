@@ -20,5 +20,6 @@ export default defineNextConfig({
       'avatars.githubusercontent.com',
       'mdbcdn.b-cdn.net'
     ],
-  }
+  },
+  output: 'standalone',
 });
