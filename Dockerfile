@@ -27,6 +27,8 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # RUN yarn build
 
+ENV NODE_ENV production
+
 RUN npx prisma migrate deploy
 RUN npx prisma generate
 
