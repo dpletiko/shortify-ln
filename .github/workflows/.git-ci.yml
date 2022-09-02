@@ -20,6 +20,7 @@ jobs:
       run: docker 
         build . 
           --file Dockerfile 
+          --target builder
           --build-arg BUILD=release
           --build-arg COMMIT="${GITHUB_SHA}"
           --build-arg VERSION="${{env.VERSION}}"
