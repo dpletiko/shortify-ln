@@ -26,6 +26,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # RUN yarn build
+
+RUN npx prisma migrate deploy
+RUN npx prisma generate
+
 RUN npm run build
 
 # Production image, copy all the files and run next
@@ -35,8 +39,6 @@ WORKDIR /app
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN npx prisma db push
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
