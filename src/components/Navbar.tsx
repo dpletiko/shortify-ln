@@ -47,7 +47,7 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
             </a>
           </Link>
 
-          <div className="w-full hidden md:block md:w-auto overflow-hidden transition-all duration-500 ease-in-out">
+          <div className="w-full hidden md:block md:w-auto overflow-hidden">
             <NavbarList />
           </div>
 
