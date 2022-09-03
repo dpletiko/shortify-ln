@@ -24,9 +24,11 @@
       shadow-md
       hover:shadow-lg
       border-white/5
+      focus:shadow-lg
       focus-within:shadow-lg
       dark:shadow-[#FFFFFF2B]
       dark:hover:shadow-[#FFFFFF2B]
+      dark:focus:shadow-[#FFFFFF2B]
       dark:focus-within:shadow-[#FFFFFF2B];
   }
 }
