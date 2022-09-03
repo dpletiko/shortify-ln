@@ -9,7 +9,9 @@ interface Props {
 
 const Login: NextPage<Props> = ({ providers }) => {
   return (
-    <AuthContainer providers={providers} />
+    <div className="flex flex-1 items-start justify-center">
+      <AuthContainer providers={providers} />
+    </div>
   );
 };
 
