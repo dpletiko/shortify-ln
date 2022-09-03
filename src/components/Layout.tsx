@@ -17,7 +17,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
           <Navbar />
         </header>
 
-        <div className="pt-[2rem] md:pt-[3rem] w-full pb-5 md:pb-8 flex-1">
+        <div className="pt-[2rem] md:pt-[3rem] w-full pb-5 md:pb-8 flex flex-1">
           <div className="container mx-auto px-6 md:px-9 flex flex-1 justify-center order-first md:order-last">
             {children}
           </div>
