@@ -39,7 +39,7 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
     <nav className="relative bg-transparent shadow-xl">
       <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
         <div className="container mx-auto flex flex-wrap justify-between items-center">
-          <Link passHref  href="/">
+          <Link passHref href="/">
             <a className="flex items-center">
               <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
                 Shortify - <span className="text-purple-300">ln</span>
@@ -88,7 +88,7 @@ const NavbarList = () => {
         </Link>
       </li>
       <li>
-        <Link passHref  href="links">
+        <Link passHref href="/links">
           <a 
             className="flex p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
           >
