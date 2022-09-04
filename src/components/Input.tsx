@@ -113,7 +113,7 @@ const Input = () => {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="mb-5 flex flex-row transition-all duration-300 rounded-lg shadowed-container">
+      <div className="mb-5 group flex flex-row transition-all duration-300 rounded-lg shadowed-container">
         <input 
           type="text" 
           name="url" 
@@ -126,9 +126,10 @@ const Input = () => {
 
         <button 
           type="submit"
-          className="px-4"
+          title="Shorten!"
+          className="px-4 outline-none text-[#9333EA] stroke-[#9333EA] hover:animate-pulse focus:animate-pulse group-focus:animate-pulse group-focus-within:animate-pulse"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#9333EA" className="w-8 h-8">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="inherit" className="w-8 h-8">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
           </svg>
         </button>
