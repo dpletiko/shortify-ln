@@ -1,10 +1,11 @@
 import { trpc } from "../utils/trpc";
-import { Link } from "@prisma/client";
+import { Link as dbLink } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import type { GetServerSideProps, NextPage } from "next";
+import Link from "next/link";
 
 type LinkRowProps = {
-  link: Link;
+  link: dbLink;
 };
 
 const Links: NextPage = () => {
@@ -58,8 +59,35 @@ const LinkRow = ({ link }: LinkRowProps) => {
       {/* <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white/95">
         {link.id}
       </td> */}
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-900 dark:text-white/95">{link.url}</td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-900 dark:text-white/95">{link.ln || "-"}</td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-900 dark:text-white/95">
+        <a 
+          href={link.url}
+          title={`Visit ${link.url}`}
+          className="flex p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
+        >
+          {link.url}
+        </a>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm font-normal text-gray-900 dark:text-white/95">
+      {link.ln ? (
+        <Link 
+          passHref 
+          href={{
+            pathname: 'ln/[ln]',
+            query: { ln: link.ln }
+          }}
+        >
+          <a 
+            title={`Visit ${link.ln}`}
+            className="flex p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
+          >
+            {link.ln}
+          </a>
+        </Link>
+      ) : (
+        "-"
+      )}
+      </td>
       <td className="px-6 py-4  whitespace-nowrap text-sm font-normal text-gray-900 dark:text-white/95">
         <div title={link.protected ? 'Password protected' : 'Publicly available'}>
           {link.protected ? (

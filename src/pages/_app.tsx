@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
 import { ToastrProvider } from "../components/Toastr";
+import { ThemeProvider } from "../components/Theme";
 
 const MyApp: AppType = ({
   Component,
@@ -14,11 +15,13 @@ const MyApp: AppType = ({
 }) => {
   return (
     <SessionProvider session={session} >
-      <ToastrProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ToastrProvider>
+      <ThemeProvider>
+        <ToastrProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ToastrProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 };

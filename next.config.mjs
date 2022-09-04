@@ -22,4 +22,7 @@ export default defineNextConfig({
     ],
   },
   output: 'standalone',
+  // compiler: {
+  //   styledComponents: true,
+  // },
 });
