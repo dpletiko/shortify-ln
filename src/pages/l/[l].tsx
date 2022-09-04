@@ -27,13 +27,13 @@ export default Ln;
 
 
 const lnSchema = z.object({
-  ln: z.string().min(3)
+  l: z.string().min(3)
 })
 
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
-    const { ln: lnQuery } = lnSchema.parse(ctx.query || ctx.params)
+    const { l: lnQuery } = lnSchema.parse(ctx.query || ctx.params)
 
     const link = await prisma.link.findFirstOrThrow({
       where: {

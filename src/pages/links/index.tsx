@@ -70,8 +70,8 @@ const LinkRow = ({ link }: LinkRowProps) => {
         <Link 
           passHref 
           href={{
-            pathname: 'ln/[ln]',
-            query: { ln: link.ln }
+            pathname: 'l/[l]',
+            query: { l: link.ln }
           }}
         >
           <a 
