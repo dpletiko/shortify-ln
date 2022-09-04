@@ -10,8 +10,6 @@ interface Props {
 }
 
 const Ln: NextPage<Props> = ({ errorCode = 500 }) => {
-  console.log("ERR", errorCode)
-  
   if (errorCode) {
     return (
       <Error 

@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { DefaultUser } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import NavLink from "./NavLink";
-import { useDarkMode } from 'usehooks-ts'
 import { ThemeColor, ThemeContext, ThemeContextType } from "./Theme";
 
 type UserDataProps = {
@@ -12,12 +11,10 @@ type UserDataProps = {
 };
 
 const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [menuOpen, toggleMenu] = useState<boolean>(false)
 
   const handleToggleMenu = () => toggleMenu(v => !v)
-
-  console.log(session)
 
   if(status !== 'authenticated') {
     return (

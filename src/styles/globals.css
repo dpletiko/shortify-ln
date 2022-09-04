@@ -39,4 +39,30 @@
       dark:focus:shadow-[#FFFFFF2B]
       dark:focus-within:shadow-[#FFFFFF2B];
   }
+
+  .btn-outline {
+    @apply 
+      border
+      outline-none
+
+      ease-in-out
+      duration-150 
+      transition-all
+
+      hover:shadow-md
+      focus:shadow-md
+
+      border-gray-400/[.3]
+      dark:border-white/[.1]
+      
+      hover:border-gray-400/[.6]
+      focus:border-gray-400/[.6]
+      hover:shadow-gray-400/[.4]
+      focus:shadow-gray-400/[.4]
+
+      dark:hover:border-white/[.2]
+      dark:focus:border-white/[.2]
+      dark:hover:shadow-white/[.2]
+      dark:focus:shadow-white/[.2];
+  }
 }

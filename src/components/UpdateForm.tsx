@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { isValidURL } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 import { ToastrContext, ToastrContextType } from "./Toastr";
@@ -21,7 +21,12 @@ type AclContainerProps = {
   handleChange(i: number, val: AclProps): void;
 };
 
+type UpdateFormProps = {
+  linkData: LinkData
+}
+
 type LinkData = {
+  id: string,
   url: string,
   acl: AclProps[],
   protected: boolean,
@@ -32,24 +37,20 @@ const INITIAL_ACL_DATA: AclProps = {
   multi: true,
   passwd: ''
 };
-const INITIAL_LINK_DATA: LinkData = {
-  url: '',
-  acl: [{...INITIAL_ACL_DATA}],
-  protected: false,
-}
 
-const Input = () => {
+const UpdateForm = ({ linkData }: UpdateFormProps) => {
   const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
 
-  const [link, setLink] = useState<LinkData>({...INITIAL_LINK_DATA})
+  const [link, setLink] = useState<LinkData>({...linkData})
 
-  const linkMutation = trpc.useMutation(["link.create"], {
-    onSuccess: () => {
-      setLink(() => ({...INITIAL_LINK_DATA}))
-      toastrSuccess('Link successfully shortened!')
+  const linkMutation = trpc.useMutation(["link.update"], {
+    onSuccess: (link) => {
+      console.log(link)
+      setLink(() => ({...link}))
+      toastrSuccess('Link successfully updated!')
     },
     onError: error => toastError(error.message)
-  });
+  })
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLink(l => ({...l, url: e.target.value }))
@@ -63,7 +64,6 @@ const Input = () => {
     setLink(l => ({...l, acl: [...l.acl, {...INITIAL_ACL_DATA}]}))
   };
   const handleAclChange = (i: number, val: AclProps) : void => {
-    // console.log(i, val)
     setLink(l => ({
       ...l, 
       acl: [
@@ -102,10 +102,8 @@ const Input = () => {
           return acc
         }, [])
       })
-      console.log(1)
       // linkMutation.mutate(link)
     } catch(e: any) {
-      console.log(e)
       toastError(e.message)
       setLink(l => ({ ...l, url: '' }))
     }
@@ -248,10 +246,7 @@ const Acl = ({
             value={acl.multi ? 'on' : 'off'}
             aria-describedby={`multi-checkbox-text-${i}`} 
             className="w-4 h-4 text-[#9333EA] accent-[#9333EA] rounded-lg" 
-            onChange={({target: {checked}}) => {
-              console.log(checked)
-              onChange(({...acl, multi: checked}))
-            }} />
+            onChange={({target: {checked}}) => onChange(({...acl, multi: checked}))} />
         </div>
         <div className="ml-2 text-sm">
           <label htmlFor={`multi-checkbox-${i}`} className="font-medium text-gray-700 dark:text-gray-400">
@@ -264,4 +259,4 @@ const Acl = ({
   );
 }
 
-export default Input;
+export default UpdateForm;

@@ -1,12 +1,12 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import Input from "../components/Input";
+import CreateForm from "../components/CreateForm";
 
 const Home: NextPage = () => {
   return (
     <div className="w-full">
       <div className="flex flex-row ">
-        <Input />
+        <CreateForm />
       </div>
     </div>
   );
