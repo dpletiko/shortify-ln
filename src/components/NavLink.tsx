@@ -32,7 +32,7 @@ const NavLink = ({
       const activePathname = new URL(asPath, location.href).pathname
 
       const newClassName =
-        linkPathname === activePathname
+        (linkPathname === activePathname || (linkPathname !== '/' && activePathname.startsWith(linkPathname))) 
           ? `${childClassName} ${activeClassName}`.trim()
           : childClassName
 
