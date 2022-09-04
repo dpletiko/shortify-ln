@@ -196,7 +196,7 @@ const AclContainer = ({
       <button 
         type="button"
         onClick={handleNew}
-        className="px-4 py-[.35rem] transition-all duration-0 shadowed-container btn-shadow-interactive w-auto flex self-start items-center rounded-lg text-xs font-medium text-gray-700 dark:text-gray-400"
+        className="px-4 py-[.35rem] transition-all duration-150 shadowed-container btn-shadow-interactive w-auto flex self-start items-center rounded-lg text-xs font-medium text-gray-700 dark:text-gray-400"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

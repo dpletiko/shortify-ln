@@ -7,10 +7,10 @@
   .btn-shadow-interactive {
     @apply
       border
-      border-transparent
+      outline-none
       hover:shadow-md
       focus:shadow-md
-      focus:outline-none
+      border-transparent
       hover:border-[#FFFFFF2B]
       hover:shadow-[#FFFFFF2B]
       focus:border-[#FFFFFF2B]
@@ -21,11 +21,19 @@
   .shadowed-container {
     @apply 
       border
+      border-gray-400/[.08]
+      focus:border-gray-400/[.13]
+      focus-within:border-gray-400/[.13]
+
+      dark:border-white/5
+      dark:focus:border-white/[.13]
+      dark:focus-within:border-white/[.13]
+
       shadow-md
       hover:shadow-lg
-      border-white/5
       focus:shadow-lg
       focus-within:shadow-lg
+
       dark:shadow-[#FFFFFF2B]
       dark:hover:shadow-[#FFFFFF2B]
       dark:focus:shadow-[#FFFFFF2B]
