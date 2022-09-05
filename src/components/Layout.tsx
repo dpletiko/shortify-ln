@@ -17,7 +17,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
       </Head>
 
       <main className="flex flex-1 flex-col items-center min-h-screen isolate bg-white dark:bg-[#181818]">
-        <header className="w-full sticky top-0">
+        <header className="w-full sticky top-0 shadow-xl dark:shadow-white/5 dark:bg-[#242424]">
           <Navbar />
         </header>
 
