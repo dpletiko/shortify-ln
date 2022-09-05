@@ -94,15 +94,16 @@ const UpdateForm = ({ linkData }: UpdateFormProps) => {
       // Reduce empty acls
       linkMutation.mutate({
         ...link,
-        acl: link.acl.reduce((acc: AclProps[], curr: AclProps) => {
+        acl: link.protected 
+          ? link.acl.reduce((acc: AclProps[], curr: AclProps) => {
           if(curr.passwd.trim().length) {
             return [...acc, curr]
           }
     
           return acc
         }, [])
+        : []
       })
-      // linkMutation.mutate(link)
     } catch(e: any) {
       toastError(e.message)
       setLink(l => ({ ...l, url: '' }))
