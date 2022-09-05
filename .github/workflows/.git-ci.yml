@@ -20,10 +20,8 @@ jobs:
       run: docker 
         build . 
           --file Dockerfile 
+          --target builder
           --build-arg BUILD=release
-          --build-arg VERSION="${{env.VERSION}}"
           --build-arg COMMIT="${GITHUB_SHA}"
+          --build-arg VERSION="${{env.VERSION}}"
           --tag "${{github.repository}}:${GITHUB_REF_NAME}"
-
-
-# --tag "${{github.repository}}:${GITHUB_REF_NAME}-$(date +%s)"

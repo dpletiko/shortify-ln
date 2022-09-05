@@ -1,33 +1,33 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { DefaultUser } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
+import NavLink from "./NavLink";
+import { ThemeColor, ThemeContext, ThemeContextType } from "./Theme";
 
 type UserDataProps = {
   user: DefaultUser;
 };
 
 const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [menuOpen, toggleMenu] = useState<boolean>(false)
 
   const handleToggleMenu = () => toggleMenu(v => !v)
-
-  console.log(session)
 
   if(status !== 'authenticated') {
     return (
       <nav className="relative bg-transparent shadow-xl">
         <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
           <div className="container mx-auto flex flex-wrap justify-between items-center">
-            <Link passHref  href="/">
+            <NavLink activeClassName="nav-link-active " passHref href="/">
               <a className="flex items-center">
                 <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
                   Shortify - <span className="text-purple-300">ln</span>
                 </span>
               </a>
-            </Link>
+            </NavLink>
             <div className="p-5 md:p-9"></div>
           </div>
         </div>
@@ -39,7 +39,7 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
     <nav className="relative bg-transparent shadow-xl">
       <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
         <div className="container mx-auto flex flex-wrap justify-between items-center">
-          <Link passHref  href="/">
+          <Link passHref href="/">
             <a className="flex items-center">
               <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
                 Shortify - <span className="text-purple-300">ln</span>
@@ -47,7 +47,7 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
             </a>
           </Link>
 
-          <div className="w-full hidden md:block md:w-auto overflow-hidden transition-all duration-500 ease-in-out">
+          <div className="w-full hidden md:block md:w-auto overflow-hidden">
             <NavbarList />
           </div>
 
@@ -71,11 +71,38 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
   );
 };
 
+const ThemeToggler = () => {
+  const { theme, toggle } = useContext(ThemeContext) as ThemeContextType;
+
+  return (
+    <button 
+      onClick={toggle}
+      title={`Toggle ${theme} mode`}
+      className={`w-full flex p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl ${theme === ThemeColor.Dark ? 'stroke-white' : 'stroke-gray-900'} hover:stroke-[#9333EA]`}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="inherit" className={`w-6 h-6`}>
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          d={
+            theme === ThemeColor.Dark 
+              ? "M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+              : "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+          } 
+        />
+      </svg>
+    </button>
+  );
+}
+
 const NavbarList = () => {
   return (
     <ul className="flex p-4 flex-col shadow-sm shadow-[#FFFFFF2B] md:flex-row md:space-x-8 md:text-sm md:font-medium md:shadow-none">
       <li>
-        <Link passHref  href="/">
+        <ThemeToggler />
+      </li>
+      <li>
+        <NavLink activeClassName="nav-link-active text-[#9333EA] dark:text-[#9333EA]" passHref href="/">
           <a 
             className="flex p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
           >
@@ -85,10 +112,10 @@ const NavbarList = () => {
 
             <span className="ml-2 whitespace-nowrap">Home</span>
           </a>
-        </Link>
+        </NavLink>
       </li>
       <li>
-        <Link passHref  href="links">
+        <NavLink activeClassName="nav-link-active text-[#9333EA] dark:text-[#9333EA]" passHref href="/links">
           <a 
             className="flex p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl hover:text-[#9333EA]"
           >
@@ -98,7 +125,7 @@ const NavbarList = () => {
 
             <span className="ml-2 whitespace-nowrap">My Links</span>
           </a>
-        </Link>
+        </NavLink>
       </li>
       <li>
         <button 
