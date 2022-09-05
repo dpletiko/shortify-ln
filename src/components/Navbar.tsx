@@ -20,7 +20,7 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
     return (
       <nav className="relative shadow-xl dark:shadow-white/5 bg-transparent dark:bg-white/5">
         <div className="lg:container mx-auto flex flex-wrap justify-between items-center px-2 sm:px-4 py-2.5">
-          <NavLink activeClassName="nav-link-active " passHref href="/">
+          <NavLink activeClassName="nav-link-active" passHref href="/">
             <a className="flex items-center">
               <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
                 Shortify - <span className="text-purple-300">ln</span>
