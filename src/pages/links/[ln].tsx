@@ -1,5 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
-import UpdateForm from "../../components/UpdateForm";
+import Form from "../../components/Form";
 import { trpc } from "../../utils/trpc";
 // import { linkRepository } from "../../server/db/redis";
 
@@ -20,7 +20,7 @@ const Link: NextPage<Props> = ({ ln }) => {
     return (
       <div className="w-full">
         <div className="flex flex-row">
-          <UpdateForm 
+          <Form 
             linkData={data}
           />
         </div>

@@ -4,6 +4,7 @@ import { trpc } from "../utils/trpc";
 import { ToastrContext, ToastrContextType } from "./Toastr";
 
 type AclProps = {
+  id?: string,
   passwd: string,
   multi: boolean,
 };
@@ -21,12 +22,12 @@ type AclContainerProps = {
   handleChange(i: number, val: AclProps): void;
 };
 
-type UpdateFormProps = {
-  linkData: LinkData
+type FormProps = {
+  linkData?: LinkData
 }
 
 type LinkData = {
-  id: string,
+  id?: string,
   url: string,
   acl: AclProps[],
   protected: boolean,
@@ -37,26 +38,46 @@ const INITIAL_ACL_DATA: AclProps = {
   multi: true,
   passwd: ''
 };
+const INITIAL_LINK_DATA: LinkData = {
+  url: '',
+  acl: [{...INITIAL_ACL_DATA}],
+  protected: false,
+}
 
-const UpdateForm = ({ linkData }: UpdateFormProps) => {
+const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
   const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
-
+  
   const [link, setLink] = useState<LinkData>({...linkData})
-
-  const linkMutation = trpc.useMutation(["link.update"], {
-    onSuccess: (link) => {
-      console.log(link)
-      setLink(() => ({...link}))
-      toastrSuccess('Link successfully updated!')
+  
+  const linkMutation = trpc.useMutation([
+      linkData.id === undefined 
+        ? "link.create"
+        : "link.update"
+    ], {
+    onSuccess: (newLink) => {
+      if(link.id === undefined) {
+        setLink(() => ({...INITIAL_LINK_DATA}))
+        toastrSuccess('Link successfully shortened!')
+      } else {
+        setLink(() => newLink.acl.length !== 0 
+          ? ({ ...newLink })
+          : ({ ...newLink, acl: [{...INITIAL_ACL_DATA}] })
+        )
+        toastrSuccess('Link successfully updated!')
+      }
     },
     onError: error => toastError(error.message)
-  })
+  });
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLink(l => ({...l, url: e.target.value }))
   };
 
   const handleLinkProtected = (checked: boolean) => {
+    if(checked && !link.acl.length) {
+      setLink(l => ({ ...l, acl: [{...INITIAL_ACL_DATA}] }))
+    }
+    
     setLink(l => ({ ...l, protected: checked }))
   };
 
@@ -90,12 +111,9 @@ const UpdateForm = ({ linkData }: UpdateFormProps) => {
 
       if(!isValidURL(link.url)) 
         throw new Error(`Invalid URL: \`${link.url}\``)
-      
-      // Reduce empty acls
-      linkMutation.mutate({
-        ...link,
-        acl: link.protected 
-          ? link.acl.reduce((acc: AclProps[], curr: AclProps) => {
+    
+      const _acl = link.protected 
+        ? link.acl.reduce((acc: AclProps[], curr: AclProps) => {
           if(curr.passwd.trim().length) {
             return [...acc, curr]
           }
@@ -103,12 +121,43 @@ const UpdateForm = ({ linkData }: UpdateFormProps) => {
           return acc
         }, [])
         : []
+
+      // Reduce empty acls
+      linkMutation.mutate({
+        ...link,
+        acl: _acl,
+        protected: link.protected && Boolean(_acl.length)
       })
+      // linkMutation.mutate(link)
     } catch(e: any) {
       toastError(e.message)
       setLink(l => ({ ...l, url: '' }))
     }
   };
+
+  return {
+    link,
+    addNewAcl,
+    removeAcl,
+    handleUrlChange,
+    handleAclChange,
+    handleLinkProtected,
+    
+    handleSubmit,
+  }
+}
+
+const Form = ({ linkData = INITIAL_LINK_DATA }: FormProps) => {
+  const { 
+    link,
+    addNewAcl,
+    removeAcl,
+    handleUrlChange,
+    handleAclChange,
+    handleLinkProtected,
+    
+    handleSubmit,  
+  } = useForm(linkData)
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -158,8 +207,8 @@ const UpdateForm = ({ linkData }: UpdateFormProps) => {
         acl={link.acl}
         enabled={link.protected}
         handleNew={addNewAcl}
-        handleChange={handleAclChange}
         handleRemove={removeAcl}
+        handleChange={handleAclChange}
       />
     </form>
   );
@@ -260,4 +309,4 @@ const Acl = ({
   );
 }
 
-export default UpdateForm;
+export default Form;

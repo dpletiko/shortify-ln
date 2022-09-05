@@ -9,10 +9,26 @@ import type { ToastrContextType } from "../../components/Toastr";
 
 type LinkRowProps = {
   link: dbLink;
+  handleDelete(): void;
 };
 
 const Links: NextPage = () => {
+  const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
+  
   const links = trpc.useQuery(["link.getLinks"]);
+  const destroyLink = trpc.useMutation([
+    "link.destroy", 
+  ], {
+    onSuccess: () => {
+      links.refetch()
+      toastrSuccess('Link successfully removed!')
+    },
+    onError: error => toastError(error.message)
+  });
+
+  const handleDestroyLink = (id: string) => {
+    destroyLink.mutate({id})
+  }
 
   return (
     <div className="w-full">
@@ -46,7 +62,13 @@ const Links: NextPage = () => {
                   </tr>
                 )}
 
-                {links.isSuccess && links.data.map((link) => <LinkRow key={link.id} link={link} />)}
+                {links.isSuccess && links.data.map((link) => (
+                  <LinkRow 
+                    key={link.id} 
+                    link={link} 
+                    handleDelete={() => handleDestroyLink(link.id)}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
@@ -56,7 +78,7 @@ const Links: NextPage = () => {
   );
 };
 
-const LinkRow = ({ link }: LinkRowProps) => {
+const LinkRow = ({ link, handleDelete }: LinkRowProps) => {
   const { info } = useContext(ToastrContext) as ToastrContextType;
   
   const handleCopy = () => {
@@ -97,30 +119,37 @@ const LinkRow = ({ link }: LinkRowProps) => {
         </span>
       </td>
       <td className="px-4 py-2 whitespace-nowrap text-sm flex">
+        <button 
+          onClick={handleCopy}
+          title="Copy to clipboard"
+          className="mr-2 flex items-center justify-center rounded-full btn-outline outline-none p-2 text-base font-normal text-gray-900 dark:text-white transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl stroke-gray-900 dark:stroke-white hover:stroke-[#9333EA] dark:hover:stroke-[#9333EA]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="inherit" className="w-4 h-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+          </svg>
+        </button>
+        
         <Link 
           passHref
           href={{
             pathname: '/links/[ln]',
             query: { ln: link.ln }
           }}
-          type="button"
-          title="Expand row"
         >
-          <a className="rounded-full btn-outline px-5 py-2 outline-none text-gray-900 dark:text-white flex flex-row items-center text-xs mr-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[.9rem] h-[.9rem] mr-2">
+          <a title="Edit link" className="mr-2 flex items-center justify-center rounded-full btn-outline p-2 outline-none text-gray-900 dark:text-white transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl stroke-gray-900 dark:stroke-white hover:stroke-[#9333EA] dark:hover:stroke-[#9333EA]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="inherit" className="w-[.9rem] h-[.9rem]">
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
             </svg>
-            <span>Edit</span>
           </a>
         </Link>
 
         <button 
-          onClick={handleCopy}
-          title="Copy to clipboard"
-          className="rounded-full btn-outline outline-none p-2 text-base font-normal text-gray-900 dark:text-white transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl stroke-gray-900 dark:stroke-white hover:stroke-[#9333EA] dark:hover:stroke-[#9333EA]"
+          title="Delete link"
+          onClick={handleDelete}
+          className="flex items-center justify-center rounded-full btn-outline outline-none p-2 text-base font-normal text-gray-900 dark:text-white transition-colors duration-250 drop-shadow-md hover:drop-shadow-xl stroke-red-500 hover:stroke-[#9333EA]"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="inherit" className="w-4 h-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </td>
