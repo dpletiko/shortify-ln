@@ -4,7 +4,7 @@ import { NotFoundError } from "@prisma/client/runtime";
 import type { GetServerSideProps, NextPage } from "next";
 
 import Error from 'next/error'
-import { linkRepository } from "../../server/db/redis";
+// import { linkRepository } from "../../server/db/redis";
 
 
 interface Props {
