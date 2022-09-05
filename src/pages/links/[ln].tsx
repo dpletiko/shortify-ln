@@ -1,7 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import UpdateForm from "../../components/UpdateForm";
 import { trpc } from "../../utils/trpc";
-import { linkRepository } from "../../server/db/redis";
+// import { linkRepository } from "../../server/db/redis";
 
 interface Props {
   ln: string
@@ -37,8 +37,8 @@ export default Link;
 
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {  
-  const getLink = await linkRepository.getLink(ctx.params?.ln as string)
-  console.log(getLink)
+  // const getLink = await linkRepository.getLink(ctx.params?.ln as string)
+  // console.log(getLink)
 
   
   return {
