@@ -4,6 +4,8 @@ import { NotFoundError } from "@prisma/client/runtime";
 import type { GetServerSideProps, NextPage } from "next";
 
 import Error from 'next/error'
+import { linkRepository } from "../../server/db/redis";
+
 
 interface Props {
   errorCode: number
@@ -30,8 +32,23 @@ const lnSchema = z.object({
   ln: z.string().min(3)
 })
 
-
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  console.time("[ln] getServerSideProps")
+  
+/*   const redisLink = await linkRepository.getLink(ctx.params?.ln as string)
+  // console.log(redisLink)
+
+  if(redisLink !== null) {
+    console.timeEnd("[ln] getServerSideProps")
+
+    return {
+      redirect: {
+        permanent: false,
+        destination: redisLink.url
+      }
+    }
+  } */
+
   try {
     const { ln: lnQuery } = lnSchema.parse(ctx.query || ctx.params)
 
@@ -43,6 +60,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         url: true
       }
     });
+
+    console.timeEnd("[ln] getServerSideProps")
 
     return {
       redirect: {

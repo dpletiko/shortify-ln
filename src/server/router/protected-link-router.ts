@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
+import { linkRepository } from "../../server/db/redis";
+import { Link } from "@prisma/client";
+
 
 // Example router with queries that can only be hit if the user requesting is signed in
 export const protectedLinkRouter = createProtectedRouter()
@@ -21,7 +24,7 @@ export const protectedLinkRouter = createProtectedRouter()
         }))
       }),
     async resolve({ ctx, input }) {
-      return await ctx.prisma.link.create({
+      const link =  await ctx.prisma.link.create({
         data: {
           ln: undefined,
           url: input.url,
@@ -32,6 +35,13 @@ export const protectedLinkRouter = createProtectedRouter()
           }
         }
       })
+
+      // await linkRepository.createLink({
+      //   ln: link.ln,
+      //   url: link.url
+      // })
+
+      return link
     },
   })
   .mutation("update", {
@@ -61,7 +71,7 @@ export const protectedLinkRouter = createProtectedRouter()
         }
       });
       
-      return await ctx.prisma.link.update({
+      const _link: Link = await ctx.prisma.link.update({
         where: {
           id: input.id
         },
@@ -85,6 +95,13 @@ export const protectedLinkRouter = createProtectedRouter()
           acl: true
         }
       })
+
+      // await linkRepository.updateLink({
+      //   ln: _link.ln,
+      //   url: _link.url
+      // })
+
+      return _link
     },
   })
   .query("getLinks", {
@@ -109,6 +126,23 @@ export const protectedLinkRouter = createProtectedRouter()
         where: {
           user: ctx.session.user,
           id
+        },
+        include: {
+          acl: true
+        }
+      });
+    },
+  })
+  .query("getLinkByLn", {
+    input: z
+      .object({
+        ln: z.string(),
+      }),
+    async resolve({ ctx, input: { ln } }) {
+      return await ctx.prisma.link.findFirstOrThrow({
+        where: {
+          user: ctx.session.user,
+          ln
         },
         include: {
           acl: true
