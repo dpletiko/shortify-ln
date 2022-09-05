@@ -18,50 +18,46 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 
   if(status !== 'authenticated') {
     return (
-      <nav className="relative bg-transparent shadow-xl">
-        <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
-          <div className="container mx-auto flex flex-wrap justify-between items-center">
-            <NavLink activeClassName="nav-link-active " passHref href="/">
-              <a className="flex items-center">
-                <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
-                  Shortify - <span className="text-purple-300">ln</span>
-                </span>
-              </a>
-            </NavLink>
-            <div className="p-5 md:p-9"></div>
-          </div>
+      <nav className="relative shadow-xl dark:shadow-white/5 bg-transparent dark:bg-white/5">
+        <div className="lg:container mx-auto flex flex-wrap justify-between items-center px-2 sm:px-4 py-2.5">
+          <NavLink activeClassName="nav-link-active " passHref href="/">
+            <a className="flex items-center">
+              <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
+                Shortify - <span className="text-purple-300">ln</span>
+              </span>
+            </a>
+          </NavLink>
+          <div className="p-5 md:p-9"></div>
         </div>
       </nav>
     );
   }
 
   return (
-    <nav className="relative bg-transparent shadow-xl">
-      <div className="bg-white dark:bg-[#181818] px-2 sm:px-4 py-2.5">
-        <div className="container mx-auto flex flex-wrap justify-between items-center">
-          <Link passHref href="/">
-            <a className="flex items-center">
-              <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
-                Shortify - <span className="text-purple-300">ln</span>
-              </span>
-            </a>
-          </Link>
+    <nav className="relative shadow-xl dark:shadow-white/5 bg-transparent dark:bg-white/5">
+      <div className="lg:container mx-auto flex flex-wrap justify-between items-center px-2 sm:px-4 py-2.5">
+        <Link passHref href="/">
+          <a className="flex items-center">
+            <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
+              Shortify - <span className="text-purple-300">ln</span>
+            </span>
+          </a>
+        </Link>
 
-          <div className="w-full hidden md:block md:w-auto overflow-hidden">
-            <NavbarList />
-          </div>
-
-          <button
-            type="button"
-            onClick={handleToggleMenu}
-            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden btn-shadow-interactive"
-          >
-            <span className="sr-only">Toggle menu</span>
-            <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
-            </svg>
-          </button>
+        <div className="w-full hidden md:block md:w-auto overflow-hidden">
+          <NavbarList />
         </div>
+
+        <button
+          type="button"
+          onClick={handleToggleMenu}
+          className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden btn-shadow-interactive"
+        >
+          <span className="sr-only">Toggle menu</span>
+          <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
+          </svg>
+        </button>
       </div>
 
       <div className={`-z-10 w-full md:hidden absolute left-0 bottom-0 origin-bottom ${menuOpen ? 'translate-y-[100%]' : ' -translate-y-[100%]'} transition-all duration-300 ease-in-out bg-white dark:bg-[#181818]`}>
