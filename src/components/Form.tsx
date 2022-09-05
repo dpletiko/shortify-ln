@@ -31,7 +31,7 @@ type LinkData = {
   url: string,
   acl: AclProps[],
   protected: boolean,
-  // ln: string | null,
+  ln?: string,
 }
 
 const INITIAL_ACL_DATA: AclProps = {
@@ -48,6 +48,8 @@ const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
   const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
   
   const [link, setLink] = useState<LinkData>({...linkData})
+
+  const [createdLink, setCreatedLink] = useState<LinkData|undefined>(linkData.id === undefined ? undefined : linkData)
   
   const linkMutation = trpc.useMutation([
       linkData.id === undefined 
@@ -55,6 +57,9 @@ const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
         : "link.update"
     ], {
     onSuccess: (newLink) => {
+      console.log(newLink)
+      setCreatedLink(newLink)
+      
       if(link.id === undefined) {
         setLink(() => ({...INITIAL_LINK_DATA}))
         toastrSuccess('Link successfully shortened!')
@@ -144,6 +149,8 @@ const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
     handleLinkProtected,
     
     handleSubmit,
+
+    createdLink
   }
 }
 
@@ -157,60 +164,73 @@ const Form = ({ linkData = INITIAL_LINK_DATA }: FormProps) => {
     handleLinkProtected,
     
     handleSubmit,  
+    createdLink,
   } = useForm(linkData)
 
+  const displayShortenLink = () => {
+    if(createdLink === undefined || createdLink.ln === undefined) return (<></>);
+
+    return `${window.location.origin}/${createdLink.ln}`
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="w-full">
-      <div className="mb-5 group flex flex-row transition-all duration-300 rounded-lg shadowed-container">
-        <input 
-          type="text" 
-          name="url" 
-          value={link.url}
-          autoComplete="off"
-          onChange={e => handleUrlChange(e)}
-          className="p-4 rounded-lg w-full text-xl font-medium focus:outline-none dark:bg-transparent text-gray-400"
-          placeholder="Type URL to shorten..." />
-
-
-        <button 
-          type="submit"
-          title="Shorten!"
-          className="px-4 outline-none text-[#9333EA] stroke-[#9333EA] hover:animate-pulse focus:animate-pulse group-focus:animate-pulse group-focus-within:animate-pulse"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="inherit" className="w-8 h-8">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-          </svg>
-        </button>
+    <div className="w-full">
+      <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150 mb-9">
+        {displayShortenLink()}
       </div>
 
-      <div className="flex p-1 mb-5">
-        <div className="flex items-center h-5">
+      <form onSubmit={handleSubmit} className="w-full">
+        <div className="mb-5 group flex flex-row transition-all duration-300 rounded-lg shadowed-container">
           <input 
-            type="checkbox" 
-            name="protected"
-            id="protected-checkbox"
-            checked={link.protected}
-            aria-describedby="protected-checkbox-text" 
-            onChange={({target: {checked}}) => handleLinkProtected(checked)}
-            className="w-4 h-4 text-[#9333EA] accent-[#9333EA] rounded-lg" />
-        </div>
-        <div className="ml-2 text-sm">
-          <label htmlFor="protected-checkbox" className="font-medium text-gray-700 dark:text-gray-400">
-            Is URL password protected?
-            <p id="protected-checkbox-text" className="text-xs font-normal text-gray-500">Define specific ACL for the shortened link.</p>
-          </label>
-        </div>
-      </div>
+            type="text" 
+            name="url" 
+            value={link.url}
+            autoComplete="off"
+            onChange={e => handleUrlChange(e)}
+            className="p-4 rounded-lg w-full text-xl font-medium focus:outline-none dark:bg-transparent text-gray-400"
+            placeholder="Type URL to shorten..." />
 
 
-      <AclContainer 
-        acl={link.acl}
-        enabled={link.protected}
-        handleNew={addNewAcl}
-        handleRemove={removeAcl}
-        handleChange={handleAclChange}
-      />
-    </form>
+          <button 
+            type="submit"
+            title="Shorten!"
+            className="px-4 outline-none text-[#9333EA] stroke-[#9333EA] hover:animate-pulse focus:animate-pulse group-focus:animate-pulse group-focus-within:animate-pulse"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="inherit" className="w-8 h-8">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex p-1 mb-5">
+          <div className="flex items-center h-5">
+            <input 
+              type="checkbox" 
+              name="protected"
+              id="protected-checkbox"
+              checked={link.protected}
+              aria-describedby="protected-checkbox-text" 
+              onChange={({target: {checked}}) => handleLinkProtected(checked)}
+              className="w-4 h-4 text-[#9333EA] accent-[#9333EA] rounded-lg" />
+          </div>
+          <div className="ml-2 text-sm">
+            <label htmlFor="protected-checkbox" className="font-medium text-gray-700 dark:text-gray-400">
+              Is URL password protected?
+              <p id="protected-checkbox-text" className="text-xs font-normal text-gray-500">Define specific ACL for the shortened link.</p>
+            </label>
+          </div>
+        </div>
+
+
+        <AclContainer 
+          acl={link.acl}
+          enabled={link.protected}
+          handleNew={addNewAcl}
+          handleRemove={removeAcl}
+          handleChange={handleAclChange}
+        />
+      </form>
+    </div>
   );
 }
 
