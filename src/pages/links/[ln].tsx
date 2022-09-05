@@ -1,13 +1,14 @@
 import type { GetServerSideProps, NextPage } from "next";
 import UpdateForm from "../../components/UpdateForm";
 import { trpc } from "../../utils/trpc";
+// import { linkRepository } from "../../server/db/redis";
 
 interface Props {
-  id: string
+  ln: string
 }
 
-const Link: NextPage<Props> = ({ id }) => {
-  const { data, isSuccess, error } = trpc.useQuery(["link.getLinkById", { id }]);
+const Link: NextPage<Props> = ({ ln }) => {
+  const { data, isSuccess, error } = trpc.useQuery(["link.getLinkByLn", { ln }]);
 
   if (error) {
     return (
@@ -35,10 +36,14 @@ const Link: NextPage<Props> = ({ id }) => {
 export default Link;
 
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {  
+  // const getLink = await linkRepository.getLink(ctx.params?.ln as string)
+  // console.log(getLink)
+
+  
   return {
     props: {
-      id: ctx.params?.id as string
+      ln: ctx.params?.ln as string
     }
   }
 };

@@ -107,8 +107,8 @@ const LinkRow = ({ link }: LinkRowProps) => {
         <Link 
           passHref
           href={{
-            pathname: '/links/[id]',
-            query: { id: link.id }
+            pathname: '/links/[ln]',
+            query: { ln: link.ln }
           }}
           type="button"
           title="Expand row"

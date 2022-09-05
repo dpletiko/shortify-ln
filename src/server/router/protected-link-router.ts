@@ -115,4 +115,21 @@ export const protectedLinkRouter = createProtectedRouter()
         }
       });
     },
+  })
+  .query("getLinkByLn", {
+    input: z
+      .object({
+        ln: z.string(),
+      }),
+    async resolve({ ctx, input: { ln } }) {
+      return await ctx.prisma.link.findFirstOrThrow({
+        where: {
+          user: ctx.session.user,
+          ln
+        },
+        include: {
+          acl: true
+        }
+      });
+    },
   });
