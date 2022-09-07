@@ -17,9 +17,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
       </Head>
 
       <main className="flex flex-1 flex-col items-center min-h-screen isolate bg-white dark:bg-[#181818]">
-        <header className="w-full sticky top-0 shadow-xl dark:shadow-white/5 dark:bg-[#242424]">
-          <Navbar />
-        </header>
+        <Navbar />
 
         <div className="pt-[2rem] md:pt-[3rem] w-full pb-5 md:pb-8 flex flex-1">
           <div className="container mx-auto px-6 md:px-9 flex flex-1 justify-center order-first md:order-last">

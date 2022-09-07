@@ -221,7 +221,6 @@ const Form = ({ linkData = INITIAL_LINK_DATA }: FormProps) => {
           </div>
         </div>
 
-
         <AclContainer 
           acl={link.acl}
           enabled={link.protected}
