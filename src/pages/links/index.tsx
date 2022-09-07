@@ -3,9 +3,10 @@ import { Link as dbLink } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ToastrContext } from "../../components/Toastr";
 import type { ToastrContextType } from "../../components/Toastr";
+import Modal from "../../components/Modal";
 
 type LinkRowProps = {
   link: dbLink;
@@ -13,6 +14,8 @@ type LinkRowProps = {
 };
 
 const Links: NextPage = () => {
+  const [modalOpen, setModalOpen] = useState<string|undefined>(undefined)
+  
   const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
   
   const links = trpc.useQuery(["link.getLinks"]);
@@ -74,6 +77,13 @@ const Links: NextPage = () => {
           </div>
         </div>
       </div>
+
+      <Modal 
+        title="Delete Link?"
+        description="This action can't be reversed."
+        onSubmit={() => }
+        onCancel={}
+      />
     </div>
   );
 };
