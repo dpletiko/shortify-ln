@@ -1,43 +1,36 @@
 // src/components/Dialog.tsx
-
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useContext, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-// import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { ThemeContext, ThemeContextType } from './Theme'
 
 type ModalButton = {
   text: string,
-  color: string,
+  focus?: boolean,
+  textColor?: string,
+  className?: string, 
+  shadowColor?: string,
   callback: () => void,
 }
 
 type ModalProps = {
+  show: boolean,
   title: string,
   description?: string | undefined,
 
-  // buttons: ModalButton[],
-
-  onSubmit:() => void,
-  onCancel:() => void,
+  actions: {
+    cancel: ModalButton,
+    submit?: ModalButton
+  },
 }
 
-const Modal: React.FC<ModalProps> = ({ title, description, onSubmit, onCancel }: ModalProps) => {
-  const [open, setOpen] = useState(true)
+const Modal: React.FC<ModalProps> = ({ show, title, description, actions }: ModalProps) => {
+  const { theme } = useContext(ThemeContext) as ThemeContextType;
 
-  const cancelButtonRef = useRef(null)
-
-  const handleSubmit = () => {
-    setOpen(false)
-    onSubmit()
-  }
-
-  const handleCancel = () => {
-    setOpen(false)
-    onCancel()
-  }
+  const focusedButtonRef = useRef(null)
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+    <Transition.Root show={show} as={Fragment}>
+      <Dialog as="div" className={`${theme} relative z-10`} initialFocus={focusedButtonRef} onClose={() => actions.cancel.callback()}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -47,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({ title, description, onSubmit, onCancel }:
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -61,8 +54,10 @@ const Modal: React.FC<ModalProps> = ({ title, description, onSubmit, onCancel }:
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <Dialog.Panel 
+                className="relative transform overflow-hidden rounded-lg bg-white dark:bg-zinc-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+              >
+                <div className="bg-white dark:bg-zinc-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 text-red-600">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -70,33 +65,29 @@ const Modal: React.FC<ModalProps> = ({ title, description, onSubmit, onCancel }:
                       </svg>
                     </div>
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                      <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-300">
                         { title }
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-800 dark:text-gray-400">
                           { description }
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleSubmit}
-                  >
-                    Deactivate
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleCancel}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
-                  </button>
+                <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  {Object.entries(actions).map(([action, btn]) => (
+                    <button
+                      type="button"
+                      onClick={btn.callback}
+                      className={`ml-3 px-4 inline-flex items-center justify-center rounded-full btn-outline outline-none p-2 text-base font-normal transition-colors duration-250 ${btn.textColor || 'text-gray-700 dark:text-gray-400 '} ${btn.className} ${btn.shadowColor}`}
+                      key={`modal-action-${action}`}
+                      ref={btn.focus ? focusedButtonRef : null}
+                    >
+                      {btn.text}
+                    </button>
+                  ))}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -107,16 +98,15 @@ const Modal: React.FC<ModalProps> = ({ title, description, onSubmit, onCancel }:
   )
 }
 
-// Modal.defaultProps = {
-//   buttons: [{
-//     text: 'Submit',
-//     color: 'bg-red-400',
-//     callback: () => ({}),
-//   }, {
-//     text: 'Cancel',
-//     color: 'bg-white dark:bg-gray-400',
-//     callback: () => ({})
-//   }]
-// }
+Modal.defaultProps = {
+  actions: {
+    cancel: {
+      focus: true,
+      text: 'Cancel',
+      callback: () => ({}),
+      className: 'bg-white dark:bg-gray-400',
+    }
+  }
+}
 
 export default Modal;
