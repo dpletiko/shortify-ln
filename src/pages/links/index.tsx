@@ -42,6 +42,21 @@ const Links: NextPage = () => {
 
   return (
     <div className="w-full">
+      <div className="flex items-end justify-end mb-3">
+        <Link 
+          passHref
+          href="/"
+        >
+          <a title="Create new link" className="flex items-center justify-center rounded-full btn-outline px-4 py-2 outline-none text-sm text-gray-900 hover:text-slate-600 focus:text-slate-600 dark:text-white dark:hover:text-slate-300 dark:focus:text-slate-300 transition-colors duration-250 stroke-gray-900 hover:stroke-slate-600 focus:stroke-slate-600 dark:stroke-white dark:hover:stroke-slate-300 dark:focus:stroke-slate-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="inherit" className="w-5 h-5 mr-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span>New Link</span>
+          </a>
+        </Link>
+      </div>
+
+
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-x-auto">
