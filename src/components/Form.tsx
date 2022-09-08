@@ -1,8 +1,5 @@
-import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isValidURL } from "../utils/helpers";
-import { trpc } from "../utils/trpc";
-import { ToastrContext, ToastrContextType } from "./Toastr";
 
 type AclProps = {
   id?: string,
@@ -24,7 +21,10 @@ type AclContainerProps = {
 };
 
 type FormProps = {
-  linkData?: LinkData
+  linkData?: LinkData,
+  onSubmit: (linkData: LinkData) => void,
+  onError?: (e: any) => void,
+  onReset?: () => void,
 }
 
 type LinkData = {
@@ -45,36 +45,14 @@ const INITIAL_LINK_DATA: LinkData = {
   protected: false,
 }
 
-const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
-  const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
-  
+const Form = ({ linkData = INITIAL_LINK_DATA, onSubmit, onError }: FormProps) => {
   const [link, setLink] = useState<LinkData>({...linkData})
 
-  const [createdLink, setCreatedLink] = useState<LinkData|undefined>(linkData.id === undefined ? undefined : linkData)
+  useEffect(() => {
+    console.log(linkData)
+    setLink(linkData)
+  }, [linkData])
   
-  const linkMutation = trpc.useMutation([
-      linkData.id === undefined 
-        ? "link.create"
-        : "link.update"
-    ], {
-    onSuccess: (newLink) => {
-      console.log(newLink)
-      setCreatedLink(newLink)
-      
-      if(link.id === undefined) {
-        setLink(() => ({...INITIAL_LINK_DATA}))
-        toastrSuccess('Link successfully shortened!')
-      } else {
-        setLink(() => newLink.acl.length !== 0 
-          ? ({ ...newLink })
-          : ({ ...newLink, acl: [{...INITIAL_ACL_DATA}] })
-        )
-        toastrSuccess('Link successfully updated!')
-      }
-    },
-    onError: error => toastError(error.message)
-  });
-
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLink(l => ({...l, url: e.target.value }))
   };
@@ -118,6 +96,7 @@ const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
       if(!isValidURL(link.url)) 
         throw new Error(`Invalid URL: \`${link.url}\``)
     
+      // Reduce empty acls
       const _acl = link.protected 
         ? link.acl.reduce((acc: AclProps[], curr: AclProps) => {
           if(curr.passwd.trim().length) {
@@ -128,61 +107,19 @@ const useForm = (linkData: LinkData = {...INITIAL_LINK_DATA}) => {
         }, [])
         : []
 
-      // Reduce empty acls
-      linkMutation.mutate({
+      onSubmit({
         ...link,
         acl: _acl,
         protected: link.protected && Boolean(_acl.length)
       })
-      // linkMutation.mutate(link)
     } catch(e: any) {
-      toastError(e.message)
-      setLink(l => ({ ...l, url: '' }))
+      // toastError(e.message)
+      onError?.(e.message)
     }
   };
 
-  return {
-    link,
-    addNewAcl,
-    removeAcl,
-    handleUrlChange,
-    handleAclChange,
-    handleLinkProtected,
-    
-    handleSubmit,
-
-    createdLink
-  }
-}
-
-const Form = ({ linkData = INITIAL_LINK_DATA }: FormProps) => {
-  const { 
-    link,
-    addNewAcl,
-    removeAcl,
-    handleUrlChange,
-    handleAclChange,
-    handleLinkProtected,
-    
-    handleSubmit,  
-    createdLink,
-  } = useForm(linkData)
-
-  const router = useRouter()
-  console.log(router)
-
-  const displayShortenLink = () => {
-    if(createdLink === undefined || createdLink.ln === undefined) return (<></>);
-
-    return `${window.location.origin}/${createdLink.ln}`
-  }
-
   return (
     <div className="w-full">
-      <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150 mb-9">
-        {displayShortenLink()}
-      </div>
-
       <form onSubmit={handleSubmit} className="w-full">
         <div className="mb-5 group flex flex-row transition-all duration-300 rounded-lg shadowed-container">
           <input 
@@ -333,3 +270,11 @@ const Acl = ({
 }
 
 export default Form;
+
+export {
+  INITIAL_LINK_DATA,
+}
+
+export type {
+  LinkData,
+}
