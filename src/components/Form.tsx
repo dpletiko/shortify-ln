@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { isValidURL } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
@@ -166,6 +167,9 @@ const Form = ({ linkData = INITIAL_LINK_DATA }: FormProps) => {
     handleSubmit,  
     createdLink,
   } = useForm(linkData)
+
+  const router = useRouter()
+  console.log(router)
 
   const displayShortenLink = () => {
     if(createdLink === undefined || createdLink.ln === undefined) return (<></>);

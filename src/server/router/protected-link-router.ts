@@ -137,6 +137,25 @@ export const protectedLinkRouter = createProtectedRouter()
       })
     },
   })
+  .mutation("aclCheck", {
+    input: z
+      .object({
+        id: z.string(),
+        passwd: z.string(),
+      }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.linkControl.findFirstOrThrow({
+        where: {
+          linkId: input.id,
+          passwd: input.passwd
+        },
+        select: {
+          id: true
+        }
+      })
+      .then(l => Boolean(l));
+    },
+  })
   .mutation("destroy", {
     input: z
       .object({

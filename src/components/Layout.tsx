@@ -1,13 +1,17 @@
 import Head from "next/head";
 import Navbar from "./Navbar";
-import Toastr from "./Toastr";
-import { PropsWithChildren, useContext } from "react";
+import Toastr, { ToastrContext, ToastrContextType } from "./Toastr";
+import { PropsWithChildren, useContext, useRef } from "react";
 import type { ThemeContextType} from "./Theme";
 import { ThemeContext } from "./Theme";
+import { Portal } from '@headlessui/react'
 
 const Layout: React.FC<PropsWithChildren> = ({children}) => {
+  const { toasts } = useContext(ToastrContext) as ToastrContextType;
   const { theme } = useContext(ThemeContext) as ThemeContextType;
   
+  const toastRef = useRef(null)
+
   return (
     <div className={theme}>
       <Head>
@@ -25,7 +29,11 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
           </div>
         </div>
 
-        <Toastr />
+        <Portal>
+          <div className={theme}>
+            <Toastr />
+          </div>
+        </Portal>
       </main>
     </div>
   );

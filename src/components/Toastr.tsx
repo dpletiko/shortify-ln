@@ -6,18 +6,24 @@ enum ToastType {
   Error = "error",
   Success = "success",
 }
+
+type ToastContent = {
+  title: string,
+  subtitle?: string
+} | string;
+
 type ToastrContextType = {
   toasts: Toast[],
-  info: (content: string) => void
-  error: (content: string) => void
-  success: (content: string) => void
+  info: (content: ToastContent) => void
+  error: (content: ToastContent) => void
+  success: (content: ToastContent) => void
 };
-type Toast = {
+interface Toast {
   id: string;
-  content: string;
   type: ToastType;
+  content: ToastContent;
   clear: CallableFunction
-};
+}
 type ToastProps = {
   toast: Toast;
   index: number;
@@ -29,7 +35,7 @@ const ToastrContext = createContext<ToastrContextType | null>(null);
 const ToastrProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [toasts, setToast] = useState<Toast[]>([]);
 
-  const _addToast = (content: string, type: ToastType) => {
+  const _addToast = (content: ToastContent, type: ToastType) => {
     const id = uuidv4()
     setToast(t => [...t, {
       id,
@@ -43,13 +49,13 @@ const ToastrProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const _handleClose = (id: string) => setToast((_t) => [..._t.filter((t) => t.id !== id)]);
 
-  const error = (content: string) => 
+  const error = (content: ToastContent) => 
     _addToast(content, ToastType.Error)
 
-  const info = (content: string) => 
+  const info = (content: ToastContent) => 
     _addToast(content, ToastType.Info)
 
-  const success = (content: string) => 
+  const success = (content: ToastContent) => 
     _addToast(content, ToastType.Success)
 
 
@@ -77,16 +83,25 @@ const Toast = ({ toast: { id, content, type, clear }, index }: ToastProps) => {
     : type === ToastType.Success
       ? 'bg-green-800'
       : 'bg-blue-800'
-  
+
+  const _title = () => (
+    <div className="text-sm font-semibold">
+      {typeof content === 'string' ? content : content.title}
+    </div>
+  )
+    
+  const _subtitle = () => 
+    typeof content === 'string' ? <></> : <div className="text-xs font-medium mt-1">{content.subtitle}</div>
+
   return (
     <div 
       id={`toast-${id}`} 
       style={{
         bottom: `calc(1rem + (${(index) * 76}px))`
       }}
-      className="right-5 absolute flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-all duration-500" 
+      className="z-10 right-5 absolute flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 transition-all duration-500" 
     >
-      <div className={`inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg text-blue-200 ${color}`}>
+      <div className={`mr-3 inline-flex flex-shrink-0 justify-center items-center w-8 h-8 rounded-lg text-blue-200 ${color}`}>
         <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path
             fillRule="evenodd"
@@ -95,7 +110,13 @@ const Toast = ({ toast: { id, content, type, clear }, index }: ToastProps) => {
           ></path>
         </svg>
       </div>
-      <div className="ml-3 text-sm font-medium">{content}</div>
+     
+      <div className="flex flex-col w-full">
+        { _title() }
+      
+        { _subtitle() }
+      </div>
+      
       <button
         type="button"
         className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"

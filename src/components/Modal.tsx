@@ -76,8 +76,8 @@ const Modal: React.FC<ModalProps> = ({ show, title, description, actions }: Moda
                     </div>
                   </div>
                 </div>
-                <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  {Object.entries(actions).map(([action, btn]) => (
+                <div className="p-4 mb-1 sm:flex sm:flex-row-reverse sm:px-6">
+                  {actions && Object.entries(actions).map(([action, btn]) => (
                     <button
                       type="button"
                       onClick={btn.callback}
