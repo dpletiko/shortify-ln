@@ -105,8 +105,8 @@ const Links: NextPage = () => {
           submit: {
             text: 'Delete',
             callback: handleDestroyLinkSubmit,
-            textColor: 'text-red-400 hover:text-red-500',
-            shadowColor: 'hover:shadow-red-400 dark:hover:shadow-red-400 hover:border-red-400 dark:hover:border-red-400',
+            textColor: 'text-red-400 hover:text-red-500 focus:text-red-500',
+            shadowColor: 'hover:shadow-red-400 dark:hover:shadow-red-400 hover:border-red-400 dark:hover:border-red-400 focus:shadow-red-400 dark:focus:shadow-red-400 focus:border-red-400 dark:focus:border-red-400',
           }, 
           cancel: {
             focus: true,

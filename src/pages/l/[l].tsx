@@ -7,7 +7,7 @@ import Error from 'next/error'
 import { Link } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
-import { ChangeEvent, useContext } from "react";
+import { useContext } from "react";
 
 import Prompt from "../../components/Prompt";
 import type { FormDataEntries } from "../../components/Prompt";
@@ -22,7 +22,7 @@ interface Props {
 
 const Ln: NextPage<Props> = ({ link, errorCode = undefined }) => { 
   const router = useRouter()
-  const { info } = useContext(ToastrContext) as ToastrContextType;
+  const { error } = useContext(ToastrContext) as ToastrContextType;
 
   if (errorCode) {
     return (
@@ -36,14 +36,15 @@ const Ln: NextPage<Props> = ({ link, errorCode = undefined }) => {
     const linkAcl = trpc.useMutation(["link.aclCheck"], {
       onSuccess: () => {
         router.push(link.url)
+      },
+      onError: (err) => {
+        error(err.message)
       }
     });
 
     const handleLinkAcl = ({ passwd }: FormDataEntries) => {
-      console.log(passwd)
-
       if(!passwd) {
-        info({
+        error({
           title: 'Invalid Link ACL!',
           subtitle: 'ACL is required and can not be empty.'
         })
@@ -56,11 +57,6 @@ const Ln: NextPage<Props> = ({ link, errorCode = undefined }) => {
       })
     }
 
-    const validateAcl = ({target: { value }}: ChangeEvent<HTMLInputElement>) => {
-      console.log(value)
-      // if(!Boolean(value.length)) 
-    }
-    
     return (
       <Prompt
         show={true}
@@ -72,17 +68,14 @@ const Ln: NextPage<Props> = ({ link, errorCode = undefined }) => {
         }}
       >
         <div className="flex flex-col items-center justify-center">
-          <div className="mt-5 mb-3 group flex flex-row transition-all duration-300 rounded-lg shadowed-container w-3/4 md:w-8/12">
+          <div className="mt-5 mb-8 group flex flex-row transition-all duration-300 rounded-lg shadowed-container w-3/4 md:w-8/12">
             <input 
+              autoFocus
               type="text" 
               name="passwd" 
               autoComplete="off"
-              onChange={validateAcl}
               className="px-4 py-2 rounded-lg w-full font-medium focus:outline-none dark:bg-transparent text-gray-400"
               placeholder="Enter link ACL password" />
-          </div>
-          <div className="mb-3 text-sm text-red-500">
-            Invalid ACL password.
           </div>
         </div>
       </Prompt>
@@ -108,18 +101,30 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     const link = await prisma.link.findFirstOrThrow({
       where: {
-        ln: lnQuery
+        ln: lnQuery,
       }, 
       select: {
+        id: true,
         url: true,
         acl: true,
+        // acl: {
+        //   where: {
+        //     enabled: true
+        //   }
+        // },
       },
     });
 
-    if(link.acl.length) {
+    if(link.acl.filter(ctl => ctl.enabled).length) {
       return {
         props: {
           link,
+        }
+      }
+    } else if(link.acl.every(ctl => !ctl.enabled)) {
+      return {
+        props: { 
+          errorCode: 500
         }
       }
     }

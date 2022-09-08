@@ -15,8 +15,7 @@ const Link: NextPage<Props> = ({ ln }) => {
   const { error: toastError, success: toastrSuccess } = useContext(ToastrContext) as ToastrContextType;
 
   const linkMutation = trpc.useMutation(["link.update"], {
-    onSuccess: (newLink) => {
-      console.log(newLink)
+    onSuccess: () => {
       refetch()
       toastrSuccess('Link successfully updated!')
     },
@@ -32,15 +31,10 @@ const Link: NextPage<Props> = ({ ln }) => {
   if(isSuccess) {
     const handleSubmit = (linkData: LinkData) => {
       console.log(linkData)
-
-      try {
-        linkMutation.mutate({
-          ...link,
-          ...linkData
-        })
-      } catch(e: any) {
-        toastError(e.message)
-      }
+      linkMutation.mutate({
+        ...link,
+        ...linkData,
+      })
     }
 
     return (
@@ -50,6 +44,8 @@ const Link: NextPage<Props> = ({ ln }) => {
             {`${window.location.origin}/l/${link.ln}`}
           </div>
         </div>
+
+        <div className="text-white text-3xl">{JSON.stringify(link.acl)}</div>
         
         <div className="flex flex-row">
           <Form 

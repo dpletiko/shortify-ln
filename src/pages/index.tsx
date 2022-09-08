@@ -28,12 +28,7 @@ const Home: NextPage = () => {
 
   const handleSubmit = (linkData: LinkData) => {
     console.log(linkData)
-
-    try {
-      linkMutation.mutate(linkData)
-    } catch(e: any) {
-      toastError(e.message)
-    }
+    linkMutation.mutate(linkData)
   }
 
   return (

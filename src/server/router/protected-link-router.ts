@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
 
@@ -144,16 +145,41 @@ export const protectedLinkRouter = createProtectedRouter()
         passwd: z.string(),
       }),
     async resolve({ ctx, input }) {
-      return await ctx.prisma.linkControl.findFirstOrThrow({
-        where: {
-          linkId: input.id,
-          passwd: input.passwd
-        },
-        select: {
-          id: true
+      console.log(input)
+
+      try {
+        const linkControl = await ctx.prisma.linkControl.findFirstOrThrow({
+          where: {
+            linkId: input.id,
+            passwd: input.passwd,
+            enabled: true
+          },
+          select: {
+            id: true,
+            multi: true,
+          }
+        })
+
+        if(linkControl.multi === false) {
+          ctx.prisma.linkControl.update({
+            where: {
+              id: linkControl.id,
+            },
+            data: {
+              enabled: false,
+            }
+          })
+          .then()
         }
-      })
-      .then(l => Boolean(l));
+
+        return Boolean(linkControl);
+      } catch(e) {
+        throw new TRPCError({
+          message: 'Invalid ACL password.',
+          code: 'INTERNAL_SERVER_ERROR',
+          cause: e
+        })
+      }
     },
   })
   .mutation("destroy", {
