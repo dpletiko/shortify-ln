@@ -10,7 +10,7 @@ type UserDataProps = {
   user: DefaultUser;
 };
 
-const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
+const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className }) => {
   const { status } = useSession();
   const [menuOpen, toggleMenu] = useState<boolean>(false)
 
@@ -18,8 +18,8 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
 
   if(status !== 'authenticated') {
     return (
-      <nav className="w-full sticky top-0 shadow-xl">
-        <div className="dark:shadow-white/5 dark:bg-[#202020]">
+      <nav className={`w-full sticky top-0 ${className}`}>
+        <div className="dark:shadow-white/5 dark:bg-[#17171A]">
           <div className="lg:container mx-auto flex flex-wrap justify-between items-center px-2 sm:px-4 py-2 md:py-0">
             <NavLink activeClassName="nav-link-active" passHref href="/">
               <a className="flex items-center">
@@ -36,8 +36,8 @@ const Navbar: React.FC<React.HTMLAttributes<HTMLDivElement>> = () => {
   }
 
   return (
-    <nav className="w-full sticky top-0 shadow-xl">
-      <div className="dark:shadow-white/5 dark:bg-[#202020]">
+    <nav className={`w-full sticky top-0 ${className}`}>
+      <div className="">
         <div className="lg:container mx-auto flex flex-wrap justify-between items-center px-2 sm:px-4 py-2 md:py-0">
           <Link passHref href="/">
             <a className="flex items-center">

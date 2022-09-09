@@ -41,7 +41,7 @@ const Links: NextPage = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full glossy">
       <div className="flex items-end justify-end mb-3">
         <Link 
           passHref

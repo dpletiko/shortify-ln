@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <div className="flex flex-row">
         {ln && (
           <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150 mb-9">
@@ -41,12 +41,14 @@ const Home: NextPage = () => {
         )}
       </div>
       
-      <div className="flex flex-row">
-        <Form 
-          linkData={link}
-          onError={toastError}
-          onSubmit={handleSubmit}
-        />
+      <div className="glossy">
+        <div className="flex flex-row">
+          <Form 
+            linkData={link}
+            onError={toastError}
+            onSubmit={handleSubmit}
+          />
+        </div>
       </div>
     </div>
   );

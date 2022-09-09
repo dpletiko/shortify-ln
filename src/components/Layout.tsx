@@ -17,8 +17,8 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-1 flex-col items-center min-h-screen isolate bg-white dark:bg-[#181818]">
-        <Navbar />
+      <main className="flex flex-1 flex-col items-center min-h-screen isolate bg-white dark:bg-[#181A21]">
+        <Navbar className="bg-white dark:bg-[#181A21]" />
 
         <div className="pt-[2rem] md:pt-[3rem] w-full pb-5 md:pb-8 flex flex-1">
           <div className="container mx-auto px-6 md:px-9 flex flex-1 justify-center order-first md:order-last">
