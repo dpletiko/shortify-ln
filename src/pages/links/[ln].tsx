@@ -39,20 +39,22 @@ const Link: NextPage<Props> = ({ ln }) => {
 
     return (
       <div className="w-full">
-        <div className="flex flex-row">
-          <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150 mb-9">
-            {`${window.location.origin}/l/${link.ln}`}
+        <div className="glossy mb-5">
+          <div className="flex flex-row">
+            <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150">
+              {`${window.location.origin}/l/${link.ln}`}
+            </div>
           </div>
         </div>
 
-        <div className="text-white text-3xl">{JSON.stringify(link.acl)}</div>
-        
-        <div className="flex flex-row">
-          <Form 
-            linkData={link}
-            onError={toastError}
-            onSubmit={handleSubmit}
-          />
+        <div className="glossy">
+          <div className="flex flex-row">
+            <Form 
+              linkData={link}
+              onError={toastError}
+              onSubmit={handleSubmit}
+            />
+          </div>
         </div>
       </div>
     );

@@ -33,13 +33,13 @@ const Home: NextPage = () => {
 
   return (
     <div className="w-full relative">
-      <div className="flex flex-row">
-        {ln && (
-          <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150 mb-9">
+      {ln && (
+        <div className="glossy mb-5">
+          <div className="flex flex-1 items-center justify-center text-green-700 font-bold text-3xl transition-all duration-150">
             {ln}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       
       <div className="glossy">
         <div className="flex flex-row">
